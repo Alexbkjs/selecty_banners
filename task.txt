@@ -1,0 +1,329 @@
+In selecty_script_v_0_1_1.js you can fully working script that is preparing every technical staff for requests to work such as hash, csrfToken and actual token to make the changes.
+
+I envision this as Chrome extension.
+The first functionality is to parse and save the element data. For start we will work with banners, but possibly add selectors as well.
+We can store the data into local storage, but consider that in the future I want it to make more robust, mostlikely will be storing it in Notion or something similiar.
+So, we are accesing website which exposes the following: window.__selectors.autodetect
+
+Here is the full object returned:
+
+{
+    "_id": "670d086c37e27fc73c2673a8",
+    "storeId": 19486841,
+    "design": {
+        "resource": "markets",
+        "behavior": "remember",
+        "resourceList": [
+            "markets"
+        ],
+        "type": "popup",
+        "scheme": "basic",
+        "styles": {
+            "general": "@media screen and (max-width: 760px) {\n.adt-modal-content {\nmax-width: 89%;\n}\n.adt-side {\ndisplay: flex;\nposition: relative;\nwidth: 35%;\n}\n}\n\n@media screen and (max-width: 520px) {\n.adt-container .adt-main {\nmin-width: 50%;\n}\n}\n",
+            "extra": ""
+        },
+        "search": "none",
+        "view": "names",
+        "short": "none",
+        "flagMode": "icon",
+        "showFlag": false,
+        "canBeClosed": true,
+        "animation": "fade",
+        "scale": 111,
+        "border": {
+            "radius": {
+                "topLeft": 10,
+                "topRight": 10,
+                "bottomLeft": 10,
+                "bottomRight": 10
+            },
+            "width": {
+                "top": 1,
+                "right": 1,
+                "bottom": 1,
+                "left": 1
+            },
+            "style": "solid",
+            "color": "#fbfaf9ff"
+        },
+        "modalStyle": {
+            "border": {
+                "radius": {
+                    "topLeft": 0,
+                    "topRight": 0,
+                    "bottomLeft": 0,
+                    "bottomRight": 0
+                },
+                "width": {
+                    "top": 1,
+                    "right": 1,
+                    "bottom": 1,
+                    "left": 1
+                },
+                "style": "solid",
+                "color": "#fbfaf9ff"
+            }
+        },
+        "secondaryButtonBorder": {
+            "radius": {
+                "topLeft": 4,
+                "topRight": 4,
+                "bottomLeft": 4,
+                "bottomRight": 4
+            },
+            "width": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+            },
+            "style": "solid",
+            "color": "#fbfaf9ff"
+        },
+        "secondaryButtonStyle": {
+            "border": {
+                "radius": {
+                    "topLeft": 4,
+                    "topRight": 4,
+                    "bottomLeft": 4,
+                    "bottomRight": 4
+                },
+                "width": {
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
+                },
+                "style": "solid",
+                "color": "#fbfaf9ff"
+            },
+            "colors": {
+                "backgroundColor": "#2022231a",
+                "color": "#202223FF"
+            },
+            "hoverColors": {
+                "backgroundColor": "#2022231a",
+                "color": "#202223FF"
+            }
+        },
+        "primaryButtonBorder": {
+            "radius": {
+                "topLeft": 0,
+                "topRight": 0,
+                "bottomLeft": 0,
+                "bottomRight": 0
+            },
+            "width": {
+                "top": 2,
+                "right": 2,
+                "bottom": 2,
+                "left": 2
+            },
+            "style": "solid",
+            "color": "#73675aff"
+        },
+        "primaryButtonStyle": {
+            "border": {
+                "radius": {
+                    "topLeft": 0,
+                    "topRight": 0,
+                    "bottomLeft": 0,
+                    "bottomRight": 0
+                },
+                "width": {
+                    "top": 2,
+                    "right": 2,
+                    "bottom": 2,
+                    "left": 2
+                },
+                "style": "solid",
+                "color": "#73675aff"
+            },
+            "colors": {
+                "backgroundColor": "#202223FF",
+                "color": "#ffffffff"
+            },
+            "hoverColors": {
+                "backgroundColor": "#ffffffff",
+                "color": "#202223FF"
+            }
+        },
+        "colors": {
+            "text": {
+                "red": 115,
+                "green": 103,
+                "blue": 90,
+                "alpha": 1,
+                "filter": "invert(39%) sepia(19%) saturate(348%) hue-rotate(351deg) brightness(98%) contrast(90%)"
+            },
+            "accent": {
+                "red": 32,
+                "green": 34,
+                "blue": 35,
+                "alpha": 1,
+                "filter": "invert(11%) sepia(1%) saturate(5837%) hue-rotate(187deg) brightness(89%) contrast(92%)"
+            },
+            "background": {
+                "red": 251,
+                "green": 250,
+                "blue": 249,
+                "alpha": 1,
+                "filter": "invert(94%) sepia(5%) saturate(441%) hue-rotate(67deg) brightness(114%) contrast(104%)"
+            }
+        },
+        "typography": {
+            "title": {
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "bold",
+                "size": {
+                    "value": 21,
+                    "dimension": "px"
+                },
+                "custom": false
+            },
+            "default": {
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "size": {
+                    "value": 15,
+                    "dimension": "px"
+                },
+                "custom": false
+            },
+            "accent": {
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+                "size": {
+                    "value": 14,
+                    "dimension": "px"
+                },
+                "custom": false
+            }
+        },
+        "withoutShadowRoot": false,
+        "hideUnavailableResources": false,
+        "position": {
+            "type": "fixed",
+            "value": {
+                "horizontal": "center",
+                "vertical": "center"
+            }
+        },
+        "visibility": {
+            "countries": {
+                "logicVariant": "include",
+                "resources": []
+            },
+            "urls": {
+                "logicVariant": "exclude",
+                "resources": [],
+                "allowSubpaths": false
+            }
+        },
+        "contentBackgroundImgUrl": null,
+        "contentBackgroundImg": null,
+        "sideImage": {
+            "url": "https://cdn.shopify.com/s/files/1/1948/6841/files/geo-popup-image.jpg?v=1772108621",
+            "position": "left",
+            "file": {
+                "type": "MediaImage",
+                "id": "gid://shopify/MediaImage/64363359764820",
+                "createdAt": "2026-02-26T12:23:39Z",
+                "previewUrl": "https://cdn.shopify.com/s/files/1/1948/6841/files/geo-popup-image.jpg?v=1772108621",
+                "url": "https://cdn.shopify.com/s/files/1/1948/6841/files/geo-popup-image.jpg?v=1772108621",
+                "extension": "jpg",
+                "filename": "geo-popup-image",
+                "width": 650,
+                "height": 975
+            }
+        }
+    },
+    "i18n": {
+        "original": {
+            "languages_currencies": "<p class='adt-content__header'>Are you in the right language and currency?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>",
+            "languages_countries": "<p class='adt-content__header'>Are you in the right place? </p><p class='adt-content__text'>Please select your shipping destination country and preferred language.</p>",
+            "languages": "<p class='adt-content__header'>Are you in the right language?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>",
+            "currencies": "<p class='adt-content__header'>Are you in the right currency?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>",
+            "markets": "<p class='adt-content__header'>Where Are You Shopping From?</p><p class='adt-content__text'>Choose your shipping country below</p>",
+            "languages_label": "Languages",
+            "countries_label": "Countries",
+            "currencies_label": "Currencies",
+            "markets_label": "Markets",
+            "countries": "<p class='adt-content__header'>Are you in the right place?</p><p class='adt-content__text'>Buy from the country of your choice. Remember that we can only ship your order to\naddresses located in the chosen country.</p>",
+            "button": "Shop now",
+            "dialog_aria_label": "Site preferences"
+        },
+        "en": {
+            "languages": "",
+            "currencies": "",
+            "markets": "",
+            "countries": "",
+            "languages_currencies": "",
+            "languages_countries": "",
+            "languages_label": "",
+            "currencies_label": "",
+            "markets_label": "",
+            "countries_label": "",
+            "button": "",
+            "dialog_aria_label": ""
+        },
+        "nb": {
+            "markets": "",
+            "markets_label": "",
+            "button": "",
+            "dialog_aria_label": ""
+        },
+        "no": {
+            "markets": "",
+            "markets_label": "",
+            "button": "",
+            "dialog_aria_label": ""
+        }
+    },
+    "visibility": [],
+    "status": "published",
+    "createdAt": "2024-10-14T12:02:52.994Z",
+    "updatedAt": "2026-03-02T14:26:18.481Z",
+    "__v": 0
+}
+
+we care only about design and i18n objects.
+So, the flow is the following, extension enabled, once extension is clicked in sidebar appears "Banners" section with buttons such as "Export", "Import" and so on. For now we are focusing on "Export".
+Once "Export" clicked we are storing the data into local storage and it is vissble in our sidebar exension. I am considering using the sidebar extension as library of the banners.
+Then since we already have the original banner which we want to apply to destination, we do the following:
+By default the "Import"/"Export" buttons are greyed out, if the conditions are not met for exporting meaning that window.__selectors is not avaiable on the page, or "Import" greyed out if we are not https://admin.shopify.com/store/${STORE}/apps/selectors/autodetect page with all necessary data being avaiable I mean the tokens.
+
+Once tokens are avaiable and banner(autodetect) data is received (result of fetchElementData(idToken) function call), we buiding save PUT request which if I copy it as fetch looks like this:
+
+fetch("https://selectors.devit.software/fullscreen/autodetect?embedded=1&fullscreen=1&hmac=7940d00064684556d3637ac7e81a05e4056ba30bded132c90eb9c796a4ae3d45&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvYS1iYWthLXRlc3Rpbmc&id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczpcL1wvYS1iYWthLXRlc3RpbmcubXlzaG9waWZ5LmNvbVwvYWRtaW4iLCJkZXN0IjoiaHR0cHM6XC9cL2EtYmFrYS10ZXN0aW5nLm15c2hvcGlmeS5jb20iLCJhdWQiOiJiYWJmNGUzZWRlYjlhNWM5ZDg0YjZhZTVhZTNiMWUyZSIsInN1YiI6IjE0Mjc2ODU3MDcwMCIsImV4cCI6MTc3MjYyNTQyNywibmJmIjoxNzcyNjI1MzY3LCJpYXQiOjE3NzI2MjUzNjcsImp0aSI6IjExNzRiYmNiLWQzY2UtNDhkMC1hMjQ3LTc5YzEzM2Y2M2FkZCIsInNpZCI6IjA2MDViMzhkLTBjOGItNDczNS04MDRhLTE1YzkxNzljMzhiOSIsInNpZyI6ImNlODRlZmQzZTA5MTE4YmExY2I2MjRiNzdhZTQzZjY0YmIzYmQxOWEzNDdhYjc0YzE1MTU0M2FlMjE5OTIyODgifQ.MIQOWp8JpUM6E2s9FEYTW8yyWfFuMZDwW_QJU1uDUw0&locale=en&session=fe14b3fe2c89512552d1f3653ad6e256c2d5196e9e34e4adf54db213ffae0d10&shop=a-baka-testing.myshopify.com&timestamp=1772625367&_data=routes%2F_app%2B%2F_extension%2B%2F_store-connection%2B%2F_resources%2B%2Ffullscreen.autodetect", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczpcL1wvYS1iYWthLXRlc3RpbmcubXlzaG9waWZ5LmNvbVwvYWRtaW4iLCJkZXN0IjoiaHR0cHM6XC9cL2EtYmFrYS10ZXN0aW5nLm15c2hvcGlmeS5jb20iLCJhdWQiOiJiYWJmNGUzZWRlYjlhNWM5ZDg0YjZhZTVhZTNiMWUyZSIsInN1YiI6IjE0Mjc2ODU3MDcwMCIsImV4cCI6MTc3MjYyNTU1MSwibmJmIjoxNzcyNjI1NDkxLCJpYXQiOjE3NzI2MjU0OTEsImp0aSI6ImFlNzE4Yjg2LTQ2ZDQtNDEzYS1hYjIyLWQzYjA4NDg1YTAwNSIsInNpZCI6IjA2MDViMzhkLTBjOGItNDczNS04MDRhLTE1YzkxNzljMzhiOSIsInNpZyI6IjQwOGMyYmQxZmRkMjkxMWYyMTFlMjc5YTQ3NDYxOWI3NjM2ZGYyMzUxNmRlZmNmNGRmNzllMGNkNzNjMzRmYzgifQ.1seunYvHldI5VTl_JGW0nwcmivsUMNWTc_RPXFk00hk",
+    "baggage": ",sentry-environment=production,sentry-release=3.3.0,sentry-public_key=b1ef673b03c5388a882e64ab196484db,sentry-trace_id=9aa47b2e47804bcea7281bd14a6aea21,sentry-sample_rate=1,sentry-sampled=true",
+    "cache-control": "no-cache",
+    "content-type": "application/json",
+    "pragma": "no-cache",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-storage-access": "active",
+    "sentry-trace": "9aa47b2e47804bcea7281bd14a6aea21-abd22abaa2e2a944-1",
+    "x-requested-with": "XMLHttpRequest"
+  },
+  "referrer": "https://selectors.devit.software/autodetect?embedded=1&hmac=164c5c0824397283c9c128220f43ec96d9dc81b5a8b502e28375366e3b1c8179&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvYS1iYWthLXRlc3Rpbmc&id_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczpcL1wvYS1iYWthLXRlc3RpbmcubXlzaG9waWZ5LmNvbVwvYWRtaW4iLCJkZXN0IjoiaHR0cHM6XC9cL2EtYmFrYS10ZXN0aW5nLm15c2hvcGlmeS5jb20iLCJhdWQiOiJiYWJmNGUzZWRlYjlhNWM5ZDg0YjZhZTVhZTNiMWUyZSIsInN1YiI6IjE0Mjc2ODU3MDcwMCIsImV4cCI6MTc3MjYyNTQyNSwibmJmIjoxNzcyNjI1MzY1LCJpYXQiOjE3NzI2MjUzNjUsImp0aSI6IjM1NzkyNDljLWIzZDAtNDcwZS04MWM5LWViNTgzMGMxM2NlNCIsInNpZCI6IjA2MDViMzhkLTBjOGItNDczNS04MDRhLTE1YzkxNzljMzhiOSIsInNpZyI6IjE5MTYyYTNmNWYzYjE1ZDc0YjM1NDNiNjA0MzJlZDU0NTE2NDY5MGE1MmJmMjFkMWY1YTVjMmQ2MDQ0OWRiNTQifQ.zCnaK-U3nb2A33eoadAcpojrlvKK0o9NQOghi8DSV8A&locale=en&session=fe14b3fe2c89512552d1f3653ad6e256c2d5196e9e34e4adf54db213ffae0d10&shop=a-baka-testing.myshopify.com&timestamp=1772625365",
+  "body": "{\"actionType\":\"save-autodetect\",\"data\":{\"autodetect\":{\"status\":\"published\",\"design\":{\"resource\":\"languages_countries_curr\",\"behavior\":\"necessary\",\"resourceList\":[null],\"type\":\"bannerModal\",\"scheme\":\"basic\",\"styles\":{\"general\":\".adt-flag-container img {\\n  content: url(\\\"https://cdn.shopify.com/s/files/1/0624/0891/7179/files/attodelogohvid_1i9fzut.png?v=1771387761\\\") !important; \\n}\\n.adt-flag-container {\\n  width: 150px !important;\\n  height: 30px !important;\\n  margin-top:30px!important; \\n}\\n\\n.adt-description {\\n    text-align: center !important;\\n}\\n.adt-disclosure-btn {\\n  background-color: transparent!important;\\n}\\n.adt-disclosure{\\n    flex-direction: row!important;\\n}\\n.adt-disclosure-label {\\n    margin-top: 15px!important;\\n    margin-left: 10px !important;\\n}\\n.adt-disclosure-btnText{\\nwidth: 100%!important;\\n}\\n\\n.adt-main{\\npadding:0!important\\n}\\n.adt-selectsWrapper {\\n  border-top: 1px solid white !important;\\n  padding-top: 12px !important;\\n  width: 100% !important;\\n}\\n\\n.adt-label-text {\\n  text-align: center !important;\\n}\\n\\n.adt-label-text p {\\n  display: block !important;\\n  text-align: left !important;\\n  margin: 6px auto !important;\\n  max-width: 420px !important;\\n  padding-left: 18px !important;\\n  position: relative !important;\\n}\\n.adt-label-text p::before {\\n  content: \\\"\\\";\\n  position: absolute;\\n  left: 0;\\n}\",\"extra\":\"\"},\"search\":\"both\",\"view\":\"all\",\"short\":\"none\",\"flagMode\":\"icon\",\"showFlag\":true,\"canBeClosed\":true,\"animation\":\"fade\",\"scale\":100,\"border\":{\"radius\":{\"topLeft\":0,\"topRight\":0,\"bottomLeft\":0,\"bottomRight\":0},\"width\":{\"top\":1,\"right\":1,\"bottom\":1,\"left\":1},\"style\":\"solid\",\"color\":\"#20222333\"},\"modalStyle\":{\"border\":{\"radius\":{\"topLeft\":0,\"topRight\":0,\"bottomLeft\":0,\"bottomRight\":0},\"width\":{\"top\":1,\"right\":1,\"bottom\":1,\"left\":1},\"style\":\"solid\",\"color\":\"#20222333\"}},\"secondaryButtonBorder\":{\"radius\":{\"topLeft\":4,\"topRight\":4,\"bottomLeft\":4,\"bottomRight\":4},\"width\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0},\"style\":\"solid\",\"color\":\"#20222333\"},\"secondaryButtonStyle\":{\"border\":{\"radius\":{\"topLeft\":4,\"topRight\":4,\"bottomLeft\":4,\"bottomRight\":4},\"width\":{\"top\":0,\"right\":0,\"bottom\":0,\"left\":0},\"style\":\"solid\",\"color\":\"#20222333\"},\"colors\":{\"backgroundColor\":\"#2022231a\",\"color\":\"#202223FF\"},\"hoverColors\":{\"backgroundColor\":\"#2022231a\",\"color\":\"#202223FF\"}},\"primaryButtonBorder\":{\"radius\":{\"topLeft\":4,\"topRight\":4,\"bottomLeft\":4,\"bottomRight\":4},\"width\":{\"top\":2,\"right\":2,\"bottom\":2,\"left\":2},\"style\":\"solid\",\"color\":\"#202223FF\"},\"primaryButtonStyle\":{\"border\":{\"radius\":{\"topLeft\":4,\"topRight\":4,\"bottomLeft\":4,\"bottomRight\":4},\"width\":{\"top\":2,\"right\":2,\"bottom\":2,\"left\":2},\"style\":\"solid\",\"color\":\"#202223FF\"},\"colors\":{\"backgroundColor\":\"#202223FF\",\"color\":\"#ffffffff\"},\"hoverColors\":{\"backgroundColor\":\"#ffffffff\",\"color\":\"#202223FF\"}},\"colors\":{\"text\":{\"red\":32,\"green\":34,\"blue\":35,\"alpha\":1},\"accent\":{\"red\":32,\"green\":34,\"blue\":35,\"alpha\":1},\"background\":{\"red\":255,\"green\":255,\"blue\":255,\"alpha\":1}},\"typography\":{\"title\":{\"fontFamily\":\"Verdana\",\"fontStyle\":\"normal\",\"fontWeight\":\"bold\",\"size\":{\"value\":18,\"dimension\":\"px\"},\"custom\":false},\"default\":{\"fontFamily\":\"Verdana\",\"fontStyle\":\"normal\",\"fontWeight\":\"normal\",\"size\":{\"value\":14,\"dimension\":\"px\"},\"custom\":false},\"accent\":{\"fontFamily\":\"Verdana\",\"fontStyle\":\"normal\",\"fontWeight\":\"normal\",\"size\":{\"value\":14,\"dimension\":\"px\"},\"custom\":false}},\"withoutShadowRoot\":false,\"hideUnavailableResources\":false,\"position\":{\"type\":\"fixed\",\"value\":{\"horizontal\":\"center\",\"vertical\":\"center\"}},\"visibility\":{\"countries\":{\"logicVariant\":\"include\",\"resources\":[\"AT\"]},\"urls\":{\"logicVariant\":\"exclude\",\"resources\":[],\"allowSubpaths\":false}}},\"visibility\":[],\"i18n\":{\"original\":{\"languages_currencies\":\"<p class='adt-content__header'>Are you in the right language and currency?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>\",\"languages_countries\":\"<div class=\\\"adt-label-text\\\">\\n<p>Free Express Shipping on orders over 200 Euro</p>\\n<p>Receive your order in 6-10 business days </p>\\n<p>Easy, tracked 30-days returns</p>\\n</div>\",\"languages\":\"<p class='adt-content__header'>Are you in the right language?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>\",\"currencies\":\"<p class='adt-content__header'>Are you in the right currency?</p><p class='adt-content__text'>Please choose what is more suitable for you.</p>\",\"markets\":\"<p class='adt-content__header'>Are you in the right place?</p><p class='adt-content__text'>Please select your shipping region.</p>\",\"languages_label\":\"Languages\",\"countries_label\":\"Countries\",\"currencies_label\":\"Currencies\",\"markets_label\":\"Markets\",\"countries\":\"<p class='adt-content__header'>Are you in the right place?</p><p class='adt-content__text'>Buy from the country of your choice. Remember that we can only ship your order to\\naddresses located in the chosen country.</p>\",\"button\":\"Shop now\",\"dialog_aria_label\":\"Site preferences\"}},\"_id\":\"69302eeabaa097a5c2443172\",\"storeId\":98218279244,\"__v\":0,\"createdAt\":\"2025-12-03T12:36:58.388Z\",\"updatedAt\":\"2026-03-04T11:29:32.373Z\"}}}",
+  "method": "PUT",
+  "mode": "cors",
+  "credentials": "include"
+});
+
+I belive a lot of the details can be omited to make the request, but it is important modify the exising banner from fetchElementData(idToken); with design and i18n data from the banner we are planning to import.
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selecty</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Selecty</h1>
+      <span class="version">v0.1.0</span>
+    </header>
+
+    <section class="status-section">
+      <div class="status-row">
+        <span class="status-label">Status</span>
+        <span class="status-badge disconnected" id="status-badge">Disconnected</span>
+      </div>
+      <div class="status-row" id="store-row" style="display:none">
+        <span class="status-label">Store</span>
+        <span class="status-value" id="store-name"></span>
+      </div>
+    </section>
+
+    <section class="actions-section">
+      <h2>Banners</h2>
+      <div class="button-row">
+        <button id="btn-export" class="btn btn-export" disabled>Export</button>
+        <button id="btn-import" class="btn btn-import" disabled>Import</button>
+      </div>
+    </section>
+
+    <section class="library-section">
+      <h3>Library <span class="count" id="banner-count">0</span></h3>
+      <div id="banner-list" class="banner-list">
+        <div class="empty-state">No banners saved yet.<br>Visit a store with Selecty and click Export.</div>
+      </div>
+    </section>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

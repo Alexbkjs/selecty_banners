@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Selecty",
+  "version": "0.1.0",
+  "description": "Export and import Selecty banner configurations across Shopify stores",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://admin.shopify.com/*",
+    "*://selectors.devit.software/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://admin.shopify.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["*://admin.shopify.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "Selecty"
+  }
+}
