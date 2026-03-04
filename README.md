@@ -6,7 +6,7 @@ A Chrome extension that exports and imports [Selecty](https://selectors.devit.so
 
 https://github.com/user-attachments/assets/05.03.2026_00.19.18_REC.mp4
 
-<video src="05.03.2026_00.19.18_REC.mp4" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/48f383cd-618e-4c56-ac06-0c7de64c6455" controls width="100%"></video>
 
 ## Features
 
