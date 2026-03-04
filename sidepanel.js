@@ -1,3 +1,8 @@
+// ─── Supabase ────────────────────────────────────────
+const SUPABASE_URL = "https://hpmbcyopnvohekmalkro.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbWJjeW9wbnZvaGVrbWFsa3JvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjUxODQyOSwiZXhwIjoyMDg4MDk0NDI5fQ.RRIQ9w2N8tW3HhhE35QB1BlG3kSxPVwPsVjeX5fxCgo";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // ─── Constants ───────────────────────────────────────
 const SUBTITLES = [
   "Let\u2019s get this show on the road.",
@@ -45,10 +50,12 @@ async function init() {
   }
 
   // Data
-  const stored = await chrome.storage.local.get(["sessionData", "banners"]);
+  const stored = await chrome.storage.local.get("sessionData");
   sessionData = stored.sessionData || null;
   updateStatus();
-  renderBanners(stored.banners || []);
+
+  const { data: banners } = await sb.from("banners").select("*").order("exported_at", { ascending: false });
+  renderBanners(banners || []);
   checkExportAvailable();
 
   // Re-check export on tab changes
@@ -243,7 +250,6 @@ btnExport.addEventListener("click", async () => {
     }
 
     // Save to library
-    const { banners = [] } = await chrome.storage.local.get("banners");
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const sourceName =
       exportMode === "admin"
@@ -253,15 +259,16 @@ btnExport.addEventListener("click", async () => {
     const banner = {
       id: Date.now().toString(),
       name: sourceName,
-      exportedAt: new Date().toISOString(),
-      sourceUrl: tab?.url || "",
+      exported_at: new Date().toISOString(),
+      source_url: tab?.url || "",
       design: data.design,
       i18n: data.i18n,
     };
 
-    banners.push(banner);
-    await chrome.storage.local.set({ banners });
-    renderBanners(banners);
+    const { error: insertErr } = await sb.from("banners").insert(banner);
+    if (insertErr) throw new Error(insertErr.message);
+    const { data: banners } = await sb.from("banners").select("*").order("exported_at", { ascending: false });
+    renderBanners(banners || []);
     showToast("Banner exported", "success");
   } catch (err) {
     showToast("Export failed: " + err.message, "error");
@@ -280,9 +287,8 @@ btnImport.addEventListener("click", async () => {
   btnImport.querySelector("span").textContent = "Importing...";
 
   try {
-    const { banners = [] } = await chrome.storage.local.get("banners");
-    const banner = banners.find((b) => b.id === selectedBannerId);
-    if (!banner) throw new Error("Banner not found in library");
+    const { data: banner, error: fetchErr } = await sb.from("banners").select("*").eq("id", selectedBannerId).single();
+    if (fetchErr || !banner) throw new Error("Banner not found in library");
 
     const idToken = await getAdminToken();
     const elementData = await fetchElementData(idToken, sessionData.store);
@@ -467,7 +473,7 @@ function renderBanners(banners) {
 
   bannerListEl.innerHTML = banners
     .map((b) => {
-      const date = new Date(b.exportedAt).toLocaleDateString();
+      const date = new Date(b.exported_at).toLocaleDateString();
       const type = b.design?.type || "unknown";
       const selected = b.id === selectedBannerId;
 
@@ -482,15 +488,22 @@ function renderBanners(banners) {
       const preview = buildPreviewHTML(b.design || {}, b.i18n || {});
       const thumbScale = 105 / preview.width;
 
+      const thumbContent = b.preview_url
+        ? `<img class="banner-thumb-img" src="${b.preview_url}" alt="Preview">`
+        : `<div class="banner-thumb-inner" style="transform:scale(${thumbScale.toFixed(4)})">${preview.html}</div>`;
+
+      const cameraSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
+
       return `
       <div class="banner-card${selected ? " selected" : ""}" data-id="${b.id}">
         <div class="banner-card-header">
-          <span class="banner-name">${esc(b.name)}</span>
+          <a class="banner-name" href="https://${esc(b.name)}/?selectors_preview" target="_blank" data-link>${esc(b.name)}</a>
           <button class="banner-delete" data-delete="${b.id}" title="Delete">&times;</button>
         </div>
         <div class="banner-card-body">
           <div class="banner-thumb">
-            <div class="banner-thumb-inner" style="transform:scale(${thumbScale.toFixed(4)})">${preview.html}</div>
+            ${thumbContent}
+            <button class="banner-preview-upload" data-upload="${b.id}" title="Custom preview">${cameraSVG}</button>
           </div>
           <div class="banner-info">
             <div class="banner-meta">
@@ -511,7 +524,7 @@ function renderBanners(banners) {
   // Selection
   bannerListEl.querySelectorAll(".banner-card").forEach((card) => {
     card.addEventListener("click", (e) => {
-      if (e.target.closest("[data-delete]")) return;
+      if (e.target.closest("[data-delete]") || e.target.closest("[data-link]")) return;
       selectedBannerId = selectedBannerId === card.dataset.id ? null : card.dataset.id;
       renderBanners(banners);
       updateButtonStates();
@@ -523,13 +536,39 @@ function renderBanners(banners) {
     btn.addEventListener("click", async (e) => {
       e.stopPropagation();
       const id = btn.dataset.delete;
-      const { banners: stored = [] } = await chrome.storage.local.get("banners");
-      const updated = stored.filter((b) => b.id !== id);
-      await chrome.storage.local.set({ banners: updated });
+      const { error: delErr } = await sb.from("banners").delete().eq("id", id);
+      if (delErr) { showToast("Delete failed: " + delErr.message, "error"); return; }
       if (selectedBannerId === id) selectedBannerId = null;
-      renderBanners(updated);
+      const { data: updated } = await sb.from("banners").select("*").order("exported_at", { ascending: false });
+      renderBanners(updated || []);
       updateButtonStates();
       showToast("Banner deleted", "info");
+    });
+  });
+
+  // Preview upload
+  bannerListEl.querySelectorAll("[data-upload]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.upload;
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.addEventListener("change", async () => {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const preview_url = reader.result;
+          const { error: updErr } = await sb.from("banners").update({ preview_url }).eq("id", id);
+          if (updErr) { showToast("Upload failed: " + updErr.message, "error"); return; }
+          const { data: updated } = await sb.from("banners").select("*").order("exported_at", { ascending: false });
+          renderBanners(updated || []);
+          showToast("Preview updated", "success");
+        };
+        reader.readAsDataURL(file);
+      });
+      input.click();
     });
   });
 }

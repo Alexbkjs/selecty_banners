@@ -13,6 +13,7 @@
   "host_permissions": [
     "*://admin.shopify.com/*",
     "*://selectors.devit.software/*",
+    "*://*.supabase.co/*",
     "<all_urls>"
   ],
   "background": {
