@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Selecty",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Export and import Selecty banner configurations across Shopify stores",
   "permissions": [
     "sidePanel",
@@ -34,7 +34,19 @@
   "side_panel": {
     "default_path": "sidepanel.html"
   },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "action": {
-    "default_title": "Selecty"
+    "default_title": "Selecty",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   }
 }
